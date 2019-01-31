@@ -4,10 +4,20 @@ from __future__ import unicode_literals
 
 import sys
 
-from django.utils import unittest
+import django
+# django.utils.unittest removed in django 1.9
+# https://stackoverflow.com/questions/47311942
+from django import VERSION
+if VERSION>= (1, 7):
+    import unittest
+else:
+    from django.utils import unittest
 from django.conf import settings
 from django.template import Template, Context
-from django_jinja.base import env
+# from django_jinja.base import env
+django.setup()
+from django_jinja.backend import Jinja2
+env = Jinja2.get_default().env
 
 from sr import sr
 from sr.templatetags.sr import *
